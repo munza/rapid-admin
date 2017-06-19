@@ -33,4 +33,5 @@ Admin::Module.create!(name: 'Admin',
 Admin::User.create!(first_name: 					 'Admin',
 									  email: 								 'admin@example.com',
 									  password: 						 'password',
-									  password_confirmation: 'password')
+									  password_confirmation: 'password',
+									  is_admin: 						  true)

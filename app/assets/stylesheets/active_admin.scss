@@ -16,6 +16,10 @@
 //
 //   .status_tag { background: #6090DB; }
 
+#header {
+	min-height: 27px;
+}
+
 .header ul.tabs#utility_nav .has_nested  > ul {
 	right: 0;
 	border-top-right-radius: 0;
