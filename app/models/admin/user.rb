@@ -1,4 +1,4 @@
-class AdminUser < ApplicationRecord
+class Admin::User < ApplicationRecord
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
   			 # :confirmable, :lockable, :timeoutable, :omniauthable

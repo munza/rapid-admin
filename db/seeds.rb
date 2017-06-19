@@ -14,7 +14,23 @@ ActiveRecord::Base::connection.tables.each do |table|
   ActiveRecord::Base::connection.execute('SET FOREIGN_KEY_CHECKS=1;')
 end
 
-AdminUser.create!(first_name: 					 'Admin',
-									email: 								 'admin@example.com',
-									password: 						 'password',
-									password_confirmation: 'password')
+Admin::Module.create!(name: 'Admin',
+											description: 'Authentication & authorization module to manage users, groups and permissions',
+											meta: {
+												resources: [
+													{ name: 'User',
+													  description: 'Manage admin users.',
+													  permissions: [:manage, :read, :create, :update, :destroy]},
+													{ name: 'Group',
+													  description: 'Manage admin user\'s groups.',
+													  permissions: [:manage, :read, :create, :update, :destroy]},
+												  { name: 'Ability',
+												    description: 'Manage ability of admin user & groups.',
+												    permissions: [:manage, :read, :create, :update, :destroy]},
+												],
+											})
+
+Admin::User.create!(first_name: 					 'Admin',
+									  email: 								 'admin@example.com',
+									  password: 						 'password',
+									  password_confirmation: 'password')

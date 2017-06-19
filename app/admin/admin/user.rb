@@ -1,4 +1,4 @@
-ActiveAdmin.register AdminUser do
+ActiveAdmin.register Admin::User, namespace: :admin, as: 'user' do
   permit_params :email, :password, :password_confirmation
 
   index do

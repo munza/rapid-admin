@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AdminUserTest < ActiveSupport::TestCase
+class Admin::UserTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
