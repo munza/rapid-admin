@@ -25,3 +25,11 @@
 	border-top-right-radius: 0;
 	border-top-left-radius: 10px;
 }
+
+form fieldset > ol > li.boolean label {
+	font-weight: bold;
+}
+
+* {
+	background-image: none !important;
+}

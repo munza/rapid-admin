@@ -7,6 +7,12 @@ class Admin::User < ApplicationRecord
 
   scope :admin, ->{ where(is_admin: true) }
 
+  after_create { |admin| admin.send_reset_password_instructions }
+
+  def password_required?
+    new_record? ? false : super
+  end
+
   def name
   	"#{first_name} #{last_name}"
   end

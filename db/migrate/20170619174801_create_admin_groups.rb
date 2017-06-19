@@ -6,5 +6,10 @@ class CreateAdminGroups < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    create_table :admin_groups_users, id: false do |t|
+    	t.references :group
+    	t.references :user
+    end
   end
 end

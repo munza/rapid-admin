@@ -1,7 +1,8 @@
 ActiveAdmin.register Admin::User, namespace: :admin, as: 'user' do
   permit_params :first_name, :last_name,
                 :email, :password, :password_confirmation,
-                :is_admin
+                :is_admin,
+                group_ids: []
 
   config.sort_order = 'first_name_desc'
 
@@ -25,12 +26,29 @@ ActiveAdmin.register Admin::User, namespace: :admin, as: 'user' do
   form do |f|
     f.inputs 'User Details' do
       f.input :email
-      f.input :password
-      f.input :password_confirmation
+      if current_admin_user.id == f.object.id
+        f.input :password
+        f.input :password_confirmation
+      end
     end
     f.inputs 'Groups' do
+      f.input :is_admin, label: 'Admin'
+      f.input :groups, as: :check_boxes
+    end
+    f.inputs 'Permissions' do
     end
     f.actions
   end
 
+  controller do
+    def update_resource(object, attributes)
+      attributes.each do |attr|
+        if attr[:password].blank? and attr[:password_confirmation].blank?
+          attr.delete :password
+          attr.delete :password_confirmation
+        end
+      end
+      object.send :update_attributes, *attributes
+    end
+  end
 end

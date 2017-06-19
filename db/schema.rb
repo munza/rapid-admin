@@ -33,6 +33,13 @@ ActiveRecord::Schema.define(version: 20170619174801) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "admin_groups_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.bigint "role_id"
+    t.bigint "user_id"
+    t.index ["role_id"], name: "index_admin_groups_users_on_role_id"
+    t.index ["user_id"], name: "index_admin_groups_users_on_user_id"
+  end
+
   create_table "admin_modules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "name"
     t.string "description"
