@@ -1,0 +1,20 @@
+active_admin_form_for resource do |f|
+  tabs do
+    tab 'Group Details' do
+      inputs 'Group Details' do
+        input :name
+        input :description, input_html: { rows: 4 }
+      end
+    end
+    tab 'Permissions' do
+      Admin::Permission.all.group_by(&:module).each do |m, r|
+        inputs m.capitalize do
+          r.group_by(&:resource).each do |l, c|
+            input :permissions, as: :check_boxes, collection: c, label: l.capitalize
+          end
+        end
+      end
+    end
+  end
+  actions
+end

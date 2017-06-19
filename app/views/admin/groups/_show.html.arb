@@ -1,0 +1,22 @@
+tabs do
+  tab 'Group Details' do
+    attributes_table_for resource do
+      row :name
+      row :description
+    end
+  end
+  tab 'Permissions' do
+    panel 'Permissions' do
+      if resource.permissions.count > 0
+        table_for resource.permissions do
+          column(:module)   { |p| p.module.capitalize }
+          column(:resource) { |p| p.resource.capitalize }
+          column(:action)   { |p| p.action.capitalize }
+          column :description
+        end
+      else
+        status_tag :no_permission_assigned
+      end
+    end
+  end
+end

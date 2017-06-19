@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170619174801) do
+ActiveRecord::Schema.define(version: 20170619193026) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "namespace"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20170619174801) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
 
+  create_table "admin_abilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "permissible_type"
+    t.bigint "permissible_id"
+    t.bigint "permission_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permissible_type", "permissible_id"], name: "index_admin_abilities_on_permissible_type_and_permissible_id"
+    t.index ["permission_id"], name: "index_admin_abilities_on_permission_id"
+  end
+
   create_table "admin_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "name"
     t.text "description"
@@ -34,9 +44,9 @@ ActiveRecord::Schema.define(version: 20170619174801) do
   end
 
   create_table "admin_groups_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.bigint "role_id"
+    t.bigint "group_id"
     t.bigint "user_id"
-    t.index ["role_id"], name: "index_admin_groups_users_on_role_id"
+    t.index ["group_id"], name: "index_admin_groups_users_on_role_id"
     t.index ["user_id"], name: "index_admin_groups_users_on_user_id"
   end
 
@@ -44,6 +54,15 @@ ActiveRecord::Schema.define(version: 20170619174801) do
     t.string "name"
     t.string "description"
     t.json "meta", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "module"
+    t.string "resource"
+    t.string "action"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

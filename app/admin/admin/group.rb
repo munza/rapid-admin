@@ -1,5 +1,6 @@
 ActiveAdmin.register Admin::Group, namespace: :admin, as: 'group' do
-	permit_params :name, :description
+	permit_params :name, :description,
+                permission_ids: []
 
   config.sort_order = 'name_desc'
 
@@ -12,18 +13,6 @@ ActiveAdmin.register Admin::Group, namespace: :admin, as: 'group' do
   	actions
   end
 
-  form do |f|
-  	f.inputs 'Group Details' do
-	  	f.input :name
-	  	f.input :description, input_html: { rows: 4 }
-	  end
-	  f.actions
-  end
-
-  show do
-  	attributes_table do
-  		row :name
-  		row :description
-  	end
-  end
+  show { render 'show' }
+  form partial: 'form'
 end

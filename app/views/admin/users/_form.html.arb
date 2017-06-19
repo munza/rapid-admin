@@ -1,0 +1,29 @@
+active_admin_form_for resource do |f|
+  tabs do
+    tab 'User Details' do
+      inputs 'User Details' do
+        input :email
+        if current_admin_user.id == object.id
+          input :password
+          input :password_confirmation
+        end
+      end
+    end
+    tab 'Groups' do
+      inputs 'Groups' do
+        input :is_admin, label: 'Admin'
+        input :groups, as: :check_boxes
+      end
+    end
+    tab 'Additional Permissions' do
+      Admin::Permission.all.group_by(&:module).each do |m, r|
+        inputs m.capitalize do
+          r.group_by(&:resource).each do |l, c|
+            input :additional_permissions, as: :check_boxes, collection: c, label: l.capitalize
+          end
+        end
+      end
+    end
+  end
+  actions
+end

@@ -1,0 +1,37 @@
+tabs do
+  tab 'User Details' do
+    attributes_table_for resource do
+      row :name
+      row :email
+      row(:admin) { |u| u.is_admin }
+      row :current_sign_in_at
+      row :last_sign_in_at
+    end
+  end
+  tab 'Groups' do
+    panel 'Groups' do
+      if resource.groups.count > 0
+        table_for resource.groups do
+          column :name
+          column :description
+        end
+      else
+        status_tag :no_group_assigned
+      end
+    end
+  end
+  tab 'Additional Permissions' do
+    panel 'Additional Permissions' do
+      if resource.additional_permissions.count > 0
+        table_for resource.additional_permissions do
+          column(:module)   { |p| p.module.capitalize }
+          column(:resource) { |p| p.resource.capitalize }
+          column(:action)   { |p| p.action.capitalize }
+          column :description
+        end
+      else
+        status_tag :no_additional_permission_assigned
+      end
+    end
+  end
+end

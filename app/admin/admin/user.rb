@@ -2,12 +2,16 @@ ActiveAdmin.register Admin::User, namespace: :admin, as: 'user' do
   permit_params :first_name, :last_name,
                 :email, :password, :password_confirmation,
                 :is_admin,
-                group_ids: []
+                group_ids: [], additional_permission_ids: []
 
   config.sort_order = 'first_name_desc'
 
   scope :all
   scope :admin
+
+  filter :first_name_or_last_name_cont, label: 'Name (Contains)'
+  filter :email
+  filter :last_sign_in_at
 
   index do
     selectable_column
@@ -19,26 +23,8 @@ ActiveAdmin.register Admin::User, namespace: :admin, as: 'user' do
     actions
   end
 
-  filter :first_name_or_last_name_cont, label: 'Name (Contains)'
-  filter :email
-  filter :last_sign_in_at
-
-  form do |f|
-    f.inputs 'User Details' do
-      f.input :email
-      if current_admin_user.id == f.object.id
-        f.input :password
-        f.input :password_confirmation
-      end
-    end
-    f.inputs 'Groups' do
-      f.input :is_admin, label: 'Admin'
-      f.input :groups, as: :check_boxes
-    end
-    f.inputs 'Permissions' do
-    end
-    f.actions
-  end
+  show { render 'show' }
+  form partial: 'form'
 
   controller do
     def update_resource(object, attributes)
