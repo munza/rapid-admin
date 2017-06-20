@@ -16,24 +16,24 @@ class Admin::User < ApplicationRecord
 
   has_paper_trail meta: { association_object: :paper_trail_associations }
 
-  validates :first_name, presence: true
-
   devise :database_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable
-  			 # :confirmable, :lockable, :timeoutable, :omniauthable
-
-  scope :admin, ->{ where(is_admin: true) }
+       :recoverable, :rememberable, :trackable, :validatable
+       # :confirmable, :lockable, :timeoutable, :omniauthable
 
   after_create { |admin| admin.send_reset_password_instructions }
 
-  def password_required?
-    new_record? ? false : super
-  end
+  scope :admin, ->{ where(is_admin: true) }
+
+  validates :first_name, presence: true
 
   def paper_trail_associations
     { groups: groups,
       abilities: abilities,
       additional_permissions: additional_permissions }
+  end
+
+  def password_required?
+    new_record? ? false : super
   end
 
   def name
@@ -76,10 +76,5 @@ class Admin::User < ApplicationRecord
       p.module == mod.to_s && p.resource == resource.to_s && (
         p.action == 'manage' || p.action == action.to_s )
     end
-  end
-
-  private
-  def touch_with_version(association)
-    self.paper_trail.touch_with_version if persisted?
   end
 end

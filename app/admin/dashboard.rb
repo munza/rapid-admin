@@ -8,6 +8,7 @@ ActiveAdmin.register_page "Dashboard" do
         Admin::Module.all.each do |m|
           if current_admin_user.has_module_access?(m.name.underscore)
             panel m.name do
+              text_node m.description
               table do
                 thead do
                   th 'Name'

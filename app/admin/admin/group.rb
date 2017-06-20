@@ -1,4 +1,6 @@
 ActiveAdmin.register Admin::Group, namespace: :admin, as: 'group' do
+  include VersionHistory
+
 	permit_params :name, :description,
                 permission_ids: []
 
@@ -14,5 +16,12 @@ ActiveAdmin.register Admin::Group, namespace: :admin, as: 'group' do
   end
 
   show { render 'show' }
+
   form partial: 'form'
+
+  controller do
+    def find_resource
+      @resource = Admin::Group.includes(:versions).find(params[:id])
+    end
+  end
 end

@@ -1,18 +1,18 @@
-<% if !@user.versions.empty? %>
-  <h5>Latest Version: <%= @user.versions.length %></h5>
+<% if !@resource.versions.empty? %>
+  <h5>Latest Version: <%= @resource.versions.length %></h5>
 
   <b>Created At:</b>
-  <%= @user.versions.last.created_at%>
+  <%= @resource.versions.last.created_at%>
   <br>
 
   <strong>User</strong>:
-  <%= @user.versions.last.whodunnit ? Admin::User.find(@user.versions.last.whodunnit).email : 'Unknown' %>
+  <%= @resource.versions.last.whodunnit ? Admin::User.find(@resource.versions.last.whodunnit).email : 'Unknown' %>
   <br>
 
-  <% if @user.versions.length.to_i > 1 %>
+  <% if @resource.versions.length.to_i > 1 %>
     <% if params[:version].to_i > 1 || !params[:version] %>
       <br>
-      <%= link_to "Previous version", {:version => (params[:version] || @user.versions.length).to_i - 1}%>
+      <%= link_to "Previous version", {:version => (params[:version] || @resource.versions.length).to_i - 1}%>
       <br>
     <% end %>
     <% if params[:version] %>
@@ -21,20 +21,16 @@
       <h5>This is Version: <%= "#{params[:version]}"%></h5>
 
       <b>Modify at:</b>
-      <%= @user.versions[(params[:version].to_i - 1)].created_at %>
+      <%= @resource.versions[(params[:version].to_i - 1)].created_at %>
       <br>
       <strong>User</strong>:
-      <%= @user.versions[(params[:version].to_i - 1)].whodunnit ? Admin::User.find(@user.versions[(params[:version].to_i - 1)].whodunnit).email : 'Unknown' %>
+      <%= @resource.versions[(params[:version].to_i - 1)].whodunnit ? Admin::User.find(@resource.versions[(params[:version].to_i - 1)].whodunnit).email : 'Unknown' %>
       <br>
       <br>
 
       <%= link_to "Go to current version"%>
     <% end %>
   <% end %>
-  <br>
-  <br>
-  <hr>
-  <%= link_to "View All", '/' %>
 <% else %>
   <p>This item does not have any registered version.</p>
 <% end %>

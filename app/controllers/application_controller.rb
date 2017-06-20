@@ -1,11 +1,7 @@
 class ApplicationController < ActionController::Base
-	include Pundit
+  include Pundit
   protect_from_forgery with: :exception
   before_action :set_paper_trail_whodunnit
-
-  def access_denied
-  	render 'errors/access_denied'
-  end
 
   protected
   def user_for_paper_trail

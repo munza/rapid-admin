@@ -9,6 +9,8 @@ class ActiveAdmin::PagePolicy < ApplicationPolicy
   	case @record.namespace.name
   	when :root
   		true
+    when :admin
+      @user.has_module_access?(:admin)
   	else
   		false
   	end

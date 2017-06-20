@@ -1,4 +1,6 @@
 ActiveAdmin.register Admin::User, namespace: :admin, as: 'user' do
+  include VersionHistory
+
   permit_params :first_name, :last_name,
                 :email, :password, :password_confirmation,
                 :is_admin,
@@ -25,21 +27,11 @@ ActiveAdmin.register Admin::User, namespace: :admin, as: 'user' do
 
   show { render 'show' }
 
-  action_item :show_history, only: :show, if: proc { current_admin_user.is_admin? } do
-    link_to 'Show History', history_admin_user_path(resource)
-  end
-
   form partial: 'form'
-
-  member_action :history do
-    raise ActiveAdmin::AccessDenied(current_admin_user, :history, resource) unless current_admin_user.is_admin?
-    versions = PaperTrail::Version.where(item_type: 'Admin::User', item_id: params[:id])
-    render "layouts/history", locals: {versions: versions}
-  end
 
   controller do
     def find_resource
-      @user = Admin::User.includes(:versions).find(params[:id])
+      @resource = Admin::User.includes(:versions).find(params[:id])
     end
 
     def update_resource(object, attributes)
