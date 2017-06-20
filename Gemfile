@@ -28,8 +28,9 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Authentication
+# Authentication & Authorization
 gem 'devise'
+gem 'pundit'
 
 # ActiveAdmin
 gem 'activeadmin', github: 'activeadmin'

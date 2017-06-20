@@ -2,6 +2,8 @@ active_admin_form_for resource do |f|
   tabs do
     tab 'User Details' do
       inputs 'User Details' do
+        input :first_name
+        input :last_name
         input :email
         if current_admin_user.id == object.id
           input :password
@@ -16,11 +18,28 @@ active_admin_form_for resource do |f|
       end
     end
     tab 'Additional Permissions' do
-      Admin::Permission.all.group_by(&:module).each do |m, r|
-        inputs m.capitalize do
-          r.group_by(&:resource).each do |l, c|
-            input :additional_permissions, as: :check_boxes, collection: c, label: l.capitalize
+      if Pundit.policy(current_admin_user, Admin::Permission).manage?
+        Admin::Permission.all.group_by(&:module).each do |m, r|
+          inputs m.capitalize do
+            r.group_by(&:resource).each do |l, c|
+              input :additional_permissions, as: :check_boxes, collection: c, label: l.capitalize
+            end
           end
+        end
+      else
+        panel 'Additional Permissions' do
+          if resource.additional_permissions.count > 0
+            table_for resource.additional_permissions do
+              column(:module)   { |p| p.module.capitalize }
+              column(:resource) { |p| p.resource.capitalize }
+              column(:action)   { |p| p.action.capitalize }
+              column :description
+            end
+          else
+            text_node '</br></br>'.html_safe
+            status_tag :no_additional_permission_assigned
+          end
+          status_tag :you_do_not_have_permission_to_change_this, class: :no
         end
       end
     end

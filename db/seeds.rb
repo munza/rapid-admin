@@ -27,7 +27,7 @@ modules = [
 			    permissions: [:manage, :read, :create, :update, :destroy]},
 		    { name: 'Permission',
 		      description: 'Manage permission of admin user & groups.',
-		      permissions: [:manage, :assign, :revoke]},
+		      permissions: [:manage]},
 		  ],
 	  },
 	},

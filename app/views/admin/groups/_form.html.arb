@@ -7,11 +7,27 @@ active_admin_form_for resource do |f|
       end
     end
     tab 'Permissions' do
-      Admin::Permission.all.group_by(&:module).each do |m, r|
-        inputs m.capitalize do
-          r.group_by(&:resource).each do |l, c|
-            input :permissions, as: :check_boxes, collection: c, label: l.capitalize
+      if Pundit.policy(current_admin_user, Admin::Permission).manage?
+        Admin::Permission.all.group_by(&:module).each do |m, r|
+          inputs m.capitalize do
+            r.group_by(&:resource).each do |l, c|
+              input :permissions, as: :check_boxes, collection: c, label: l.capitalize
+            end
           end
+        end
+      else
+        panel 'Permissions' do
+          if resource.permissions.count > 0
+            table_for resource.permissions do
+              column(:module)   { |p| p.module.capitalize }
+              column(:resource) { |p| p.resource.capitalize }
+              column(:action)   { |p| p.action.capitalize }
+              column :description
+            end
+          else
+            status_tag :no_permission_assigned
+          end
+          status_tag :you_do_not_have_permission_to_change_this, class: :no
         end
       end
     end

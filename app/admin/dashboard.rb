@@ -6,11 +6,30 @@ ActiveAdmin.register_page "Dashboard" do
 
       column do
         Admin::Module.all.each do |m|
-          panel m.name do
-            table_for m.meta['resources'] do
-              column { |r| r['name'] }
-              column { |r| r['description'] }
-              column { |r| link_to 'Manage', "/#{m.name.underscore}/#{r['name'].pluralize.underscore}" }
+          if current_admin_user.has_module_access?(m.name.underscore)
+            panel m.name do
+              table do
+                thead do
+                  th 'Name'
+                  th 'Description'
+                  th
+                end
+                tbody do
+                  m.meta['resources'].each do |r|
+                    if current_admin_user.has_resource_access?(m.name.underscore, r['name'].underscore)
+                      tr do
+                        td r['name']
+                        td r['description']
+                        td link_to 'Manage', "/#{m.name.underscore}/#{r['name'].pluralize.underscore}"
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          else
+            panel 'Modules' do
+              text_node 'You do not have permission to any module...'
             end
           end
         end
