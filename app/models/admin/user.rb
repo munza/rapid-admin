@@ -35,11 +35,13 @@ class Admin::User < ApplicationRecord
   end
 
   def has_module_access?(mod)
+    return true if is_admin?
     additional_permissions.any? { |p| p.module == mod.to_s } ||
     group_permissions.any? { |p| p.module == mod.to_s }
   end
 
   def has_resource_access?(mod, resource = :all)
+    return true if is_admin?
     additional_permissions.any? { |p| p.module == mod.to_s && p.resource == resource.to_s } ||
     group_permissions.any? { |p| p.module == mod.to_s && p.resource == resource.to_s }
   end

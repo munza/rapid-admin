@@ -16,7 +16,7 @@ ActiveAdmin.register_page "Dashboard" do
                 end
                 tbody do
                   m.meta['resources'].each do |r|
-                    if current_admin_user.has_resource_access?(m.name.underscore, r['name'].underscore)
+                    if r['admin'] && current_admin_user.has_resource_access?(m.name.underscore, r['name'].underscore)
                       tr do
                         td r['name']
                         td r['description']

@@ -20,12 +20,15 @@ modules = [
 	  meta: {
 	    resources: [
 		 	  { name: 'User',
+		 	  	admin: true,
 			    description: 'Manage admin users.',
 			    permissions: [:manage, :read, :create, :update, :destroy]},
 			  { name: 'Group',
+			  	admin: true,
 			    description: 'Manage admin user\'s groups.',
 			    permissions: [:manage, :read, :create, :update, :destroy]},
 		    { name: 'Permission',
+		    	admin: false,
 		      description: 'Manage permission of admin user & groups.',
 		      permissions: [:manage]},
 		  ],
@@ -46,7 +49,7 @@ modules.each do |m|
 		r[:permissions].each do |p|
 			Admin::Permission.create!('module'      => m[:name].underscore,
 																'resource'    => r[:name].underscore,
-																'action'      => p.underscore)
+																'action'      => p.to_s.underscore)
 		end
 	end
 end
