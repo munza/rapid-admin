@@ -1,0 +1,26 @@
+panel "History" do
+  table_for versions do
+    column ("Event") { |v| v.event.capitalize }
+  	column ("Modified at") { |v| v.created_at.to_s :long }
+  	column ("Admin") do |v|
+  		if v.whodunnit
+  			link_to Admin::User.find(v.whodunnit).email, Admin::User.find(v.whodunnit)
+  		else
+  			'Unknown'
+  		end
+  	end
+  	column ("Object") { |v| v.object.gsub(/\n/, '<br>').html_safe }
+    column ("Association Object") do |v|
+      table do
+        tbody do
+          v.association_object.each do |k, o|
+            tr do
+              td "<strong>#{k}</strong>".html_safe
+              td o
+            end
+          end
+        end
+      end
+    end
+  end
+end
