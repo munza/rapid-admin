@@ -1,5 +1,7 @@
 # RapidAdmin
 
+**This project is no longer maintained. Use it at your own risk if you must.**
+
 ActiveAdmin Starter Repo with Pundit Authorization
 
 Things you may want to cover:
